@@ -13,12 +13,12 @@ import numpy as np
 
 def get_fer2013_dataloaders(data_dir, batch_size, num_workers, shuffle, val_split):
     transform = transforms.Compose([
-        transforms.Grayscale(num_output_channels=1),
+        transforms.Grayscale(num_output_channels=3),  # Convert 1-channel to 3-channel
+        transforms.Resize((224, 224)),  # Resize to 224x224 for MobileNetV2
         transforms.RandomRotation(degrees=10),  # ±10° rotation
         transforms.RandomAffine(degrees=0, translate=(0.2, 0.2), scale=(0.8, 1.2)),  # ±20% scaling/shifting
-        transforms.Resize((48, 48)),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.5], std=[0.5])
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # ImageNet normalization
     ])
 
     full_dataset = ImageFolder(root=data_dir, transform=transform)
@@ -123,7 +123,7 @@ def test_model(model, test_loader, device):
     return test_acc
 
 
-def save_run_details(file_path, params, final_test_acc):
+def save_run_details(file_path, params, final_test_acc, comment):
     with open(file_path, "w") as f:
         f.write("Training Parameters and Results\n")
         f.write("=" * 40 + "\n")
@@ -131,10 +131,11 @@ def save_run_details(file_path, params, final_test_acc):
             f.write(f"{key}: {value}\n")
         f.write("=" * 40 + "\n")
         f.write(f"Final Test Accuracy: {final_test_acc:.2f}%\n")
+        f.write(comment)
 
 def main():
-    name = "MobileNetV2-Training-8"
-    wandb.init(project="Emotion-recognition-FER2013-Training", name= name)
+    name = "MobileNetV2_Training_9"
+    wandb.init(project="Emotion-recognition-FER2013-Training", name=name)
     train_dir = "C:\\Users\\floimb\\Documents\\data\\FER-2013\\train"
     test_dir = "C:\\Users\\floimb\\Documents\\data\\FER-2013\\test"
     model_dir = "C:\\Users\\floimb\\Documents\\Models\\Mobilenet"
@@ -151,15 +152,15 @@ def main():
     train_loader, val_loader = get_fer2013_dataloaders(train_dir, batch_size, num_workers, shuffle, val_split)
     test_loader = get_fer2013_dataloaders(test_dir, batch_size, num_workers, shuffle, 0.0)[0]
 
-    model = models.mobilenet_v2(pretrained=False)
+    model = models.mobilenet_v2(pretrained=True)
 
     # Modify the first convolution layer to accept 1-channel input
-    model.features[0][0] = nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1, bias=False)
+    #model.features[0][0] = nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1, bias=False)
 
     model.classifier[1] = torch.nn.Linear(model.last_channel, num_classes)
     model = model.to(device)
 
-    summary(model, (1, 48, 48))
+    summary(model, (3, 224, 224))
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
@@ -183,7 +184,7 @@ def main():
         "Test Directory": test_dir
     })
 
-    comment = "optimal mobilenet for emotion reconition without: class balance and pretraining"
+    comment = "pretrained on imagenet, class balanced"
 
     # Save parameters to a file
     save_run_details(name + "_training_results.txt", wandb.config, test_acc, comment)

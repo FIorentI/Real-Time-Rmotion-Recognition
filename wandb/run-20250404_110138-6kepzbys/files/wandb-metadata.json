@@ -1,0 +1,31 @@
+{
+  "os":  "Windows-10-10.0.19045-SP0",
+  "python":  "CPython 3.12.9",
+  "startedAt":  "2025-04-04T09:01:38.693079Z",
+  "program":  "C:\\Users\\floimb\\Documents\\Git\\Embedded_Rmotion_Recognition\\MobileNet_emotion_class_balance.py",
+  "codePath":  "MobileNet_emotion_class_balance.py",
+  "git":  {
+    "remote":  "git@github.com:FIorentI/Embedded_Rmotion_Recognition.git",
+    "commit":  "63ea49d30d109a8b403bd64511a5042a8fce9ca9"
+  },
+  "email":  "flo-imbert@hotmail.fr",
+  "root":  "C:\\Users\\floimb\\Documents\\Git\\Embedded_Rmotion_Recognition",
+  "host":  "B6881",
+  "executable":  "C:\\Users\\floimb\\AppData\\Local\\anaconda3\\envs\\dev\\python.exe",
+  "codePathLocal":  "MobileNet_emotion_class_balance.py",
+  "cpu_count":  4,
+  "cpu_count_logical":  8,
+  "disk":  {
+    "/":  {
+      "total":  "506333229056",
+      "used":  "132863459328"
+    }
+  },
+  "memory":  {
+    "total":  "34065145856"
+  },
+  "cpu":  {
+    "count":  4,
+    "countLogical":  8
+  }
+}

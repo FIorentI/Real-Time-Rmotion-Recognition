@@ -1,0 +1,14 @@
+Training Parameters and Results
+========================================
+Model: MobileNetV2
+Dataset: FER2013
+Batch Size: 32
+Learning Rate: 0.001
+Epochs: 1000
+Patience: 10
+Device: cpu
+Train Directory: C:\Users\floimb\Documents\data\FER-2013\train
+Test Directory: C:\Users\floimb\Documents\data\FER-2013\test
+========================================
+Final Test Accuracy: 61.37%
+pretrained on imagenet, class balanced

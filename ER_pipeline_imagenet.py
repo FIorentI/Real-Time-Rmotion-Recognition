@@ -16,11 +16,11 @@ yolo_model.to(device)
 # Load Emotion Recognition Model
 # Recreate the same model architecture
 emotion_model = models.mobilenet_v2(pretrained=False)  # Don't load pretrained weights
-emotion_model.features[0][0] = nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1, bias=False)
+#emotion_model.features[0][0] = nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1, bias=False)
 emotion_model.classifier[1] = torch.nn.Linear(1280, 7)  # Adjust the classifier if needed
 
 # Load the saved weights
-emotion_model.load_state_dict(torch.load("C:\\Users\\floimb\\Documents\\Models\\Mobilenet\\FER_best_model.pth", map_location=device))
+emotion_model.load_state_dict(torch.load("C:\\Users\\floimb\\Documents\\Models\\Mobilenet\\MobileNetV2_Training_9_best_model.pth", map_location=device))
 
 # Move model to the correct device and set to eval mode
 emotion_model.to(device)
@@ -30,19 +30,14 @@ emotion_model.eval()
 EMOTION_LABELS = ['Angry', 'Disgust', 'Fear', 'Happy', 'Neutral', 'Sad', 'Surprise']
 
 # Define transformations
-# transform = transforms.Compose([
-#     transforms.Resize(256),
-#     transforms.CenterCrop(224),
-#     transforms.ToTensor(),
-#     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-# ])
 transform = transforms.Compose([
-    transforms.Grayscale(num_output_channels=1),
-    transforms.RandomRotation(degrees=90),
-    transforms.Resize((48, 48)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.5], std=[0.5])
-])
+        transforms.Grayscale(num_output_channels=3),  # Convert 1-channel to 3-channel
+        transforms.Resize((224, 224)),  # Resize to 224x224 for MobileNetV2
+        transforms.RandomRotation(degrees=10),  # ±10° rotation
+        transforms.RandomAffine(degrees=0, translate=(0.2, 0.2), scale=(0.8, 1.2)),  # ±20% scaling/shifting
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # ImageNet normalization
+    ])
 
 threshold = 0.5  # Detection confidence threshold
 total_fps = []

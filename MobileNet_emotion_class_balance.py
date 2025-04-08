@@ -123,7 +123,7 @@ def test_model(model, test_loader, device):
     return test_acc
 
 
-def save_run_details(file_path, params, final_test_acc):
+def save_run_details(file_path, params, final_test_acc, comment):
     with open(file_path, "w") as f:
         f.write("Training Parameters and Results\n")
         f.write("=" * 40 + "\n")
@@ -131,10 +131,11 @@ def save_run_details(file_path, params, final_test_acc):
             f.write(f"{key}: {value}\n")
         f.write("=" * 40 + "\n")
         f.write(f"Final Test Accuracy: {final_test_acc:.2f}%\n")
+        f.write(comment)
 
 def main():
-    name = "MobileNetV2-Training-8"
-    wandb.init(project="Emotion-recognition-FER2013-Training", name= name)
+    name = "MobileNetV2_Training_8bis"
+    wandb.init(project="Emotion-recognition-FER2013-Training", name=name)
     train_dir = "C:\\Users\\floimb\\Documents\\data\\FER-2013\\train"
     test_dir = "C:\\Users\\floimb\\Documents\\data\\FER-2013\\test"
     model_dir = "C:\\Users\\floimb\\Documents\\Models\\Mobilenet"
@@ -183,7 +184,7 @@ def main():
         "Test Directory": test_dir
     })
 
-    comment = "optimal mobilenet for emotion reconition without: class balance and pretraining"
+    comment = "class balanced"
 
     # Save parameters to a file
     save_run_details(name + "_training_results.txt", wandb.config, test_acc, comment)
