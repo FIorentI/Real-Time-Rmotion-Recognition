@@ -24,7 +24,6 @@ This repository combines two key components in one project:
 .
 ├── ER_pipeline_imagenet.py         # Real-time Object & Emotion Detection
 ├── MobileNet_emotion_pretrained.py        # Training MobileNetV2 on FER-2013
-├── requirements.txt # Dependencies
 ├── README.md        # Documentation
 └── Models/
     ├── Yolo_Weights/         # YOLOv8 weights
@@ -86,7 +85,7 @@ This will:
 
 ###  2. Real-Time Object + Emotion Detection  
 1. Place trained MobileNetV2 weights inside `models/Mobilenet/`.  
-2. Place YOLOv8 weights (`yolov8m_200e.pt`) inside `models/Yolo_Weights/`.  
+2. Place YOLOv8 weights (`yolov8m_100e.pt`) inside `models/Yolo_Weights/`.  
 3. Run inference
 4. A webcam window opens showing:  
    - Detected objects with bounding boxes.  
