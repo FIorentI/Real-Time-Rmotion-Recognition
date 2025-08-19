@@ -10,7 +10,7 @@ from PIL import Image
 
 # Load YOLO Object Detection Model
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-yolo_model = YOLO('C:\\Users\\floimb\\Documents\\Models\\Yolo_Weights\\yolov8m_200e.pt')
+yolo_model = YOLO('/Users/floimb/Documents/Models/Yolo_Weights/yolov8m_200e.pt')
 yolo_model.to(device)
 
 # Load Emotion Recognition Model
@@ -20,7 +20,7 @@ emotion_model = models.mobilenet_v2(pretrained=False)  # Don't load pretrained w
 emotion_model.classifier[1] = torch.nn.Linear(1280, 7)  # Adjust the classifier if needed
 
 # Load the saved weights
-emotion_model.load_state_dict(torch.load("C:\\Users\\floimb\\Documents\\Models\\Mobilenet\\MobileNetV2_Training_9_best_model.pth", map_location=device))
+emotion_model.load_state_dict(torch.load("/Users/floimb/Documents/Models/Mobilenet/MobileNetV2_Training_9_best_model.pth", map_location=device))
 
 # Move model to the correct device and set to eval mode
 emotion_model.to(device)
